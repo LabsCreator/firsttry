@@ -1,0 +1,216 @@
+<button id="openModalDeletePaper" [hidden]="true" data-toggle="modal" data-target="#deletePaper"></button>
+<button id="openModalDeleteSolution" [hidden]="true" data-toggle="modal" data-target="#deleteSolution"></button>
+
+<div class="modal fade" id="deletePaper" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body" style="text-align: center; padding: 5% 0 5% 0">
+                Are you sure you want to delete this paper?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onConfirmDeletePaper()">OK</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteSolution" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body" style="text-align: center; padding: 5% 0 5% 0">
+                Are you sure you want to delete this solution?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onConfirmDeleteSolution()">OK</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="margin-top: 3%">
+    <div class="row">
+        <div class="col-xs-12">
+            <div style="margin-bottom: 3%">
+                <h2>My solutions</h2>
+            </div>
+            <div>
+                <button *ngIf="!showPapers" class="btn btn-info btn-xs" (click)="onShowPapers()">Show papers</button>
+                <button *ngIf="showPapers" class="btn btn-info btn-xs" (click)="onHidePapers()">Hide papers</button>
+                <button class="btn btn-success btn-xs" (click)="onAddPaper()">Add paper</button>
+                <button class="btn btn-primary btn-xs" (click)="onEditPaper()">Edit paper</button>
+                <button class="btn btn-danger btn-xs" (click)="onDeletePaper()">Remove paper</button>
+            </div>
+            <div *ngIf="showPaperForm" class="col-sm-8 col-sm-offset-2" style="padding: 5% 0% 5% 0%">
+                <div class="jumbotron">
+                    <div class="text-center">
+                        <h2>Paper</h2>
+                    </div>
+                    <form *ngIf="paperForm" [formGroup]="paperForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group"
+                             [ngClass]="{'has-error':
+                        (!paperForm.controls['citation'].valid ) &&
+                        (paperForm.controls['citation'].touched || submitted)}">
+                            <label for="citation">
+                                Citation
+                            </label>
+                            <textarea
+                                    id="citation"
+                                    class="form-control"
+                                    [formControl]="paperForm.controls['citation']"></textarea>
+                            <div class="field-error"
+                                 *ngIf="(paperForm.controls['citation'].hasError('required')) &&
+                            (paperForm.controls['citation'].touched || submitted)">
+                                Field is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="url">
+                                Url
+                            </label>
+                            <input
+                                    type="url"
+                                    id="url"
+                                    class="form-control"
+                                    [formControl]="paperForm.controls['url']">
+                        </div>
+                        <div align="right">
+                            <div align="right">
+                                <button
+                                        class="btn btn-primary align-right style-1"
+                                        type="submit">
+                                    Save
+                                </button>
+                                <button
+                                        class="btn btn-primary align-right style-2"
+                                        (click)="onHidePaperForm()">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div *ngIf="solutions" class="col-xs-12 solutions">
+                <div class="table-responsive">
+                    <table class="table">
+                    <thead>
+                    <tr>
+                        <th rowspan="2"></th>
+                        <th rowspan="2">
+                            <span style="float: left">Instance</span>
+                            <span (click)="onInstanceAsc()" style="font-size: 18px; float: right;" class="glyphicon glyphicon-triangle-top"></span>
+                            <span (click)="onInstanceDesc()" style="font-size: 18px; float: right;" class="glyphicon glyphicon-triangle-bottom"></span>
+                        </th>
+                        <th colspan="2">
+                            <span style="float: left">Quality</span>
+                            <span (click)="onQualityAsc()" style="font-size: 18px; float: right;" class="glyphicon glyphicon-triangle-top"></span>
+                            <span (click)="onQualityDesc()" style="font-size: 18px; float: right;" class="glyphicon glyphicon-triangle-bottom"></span>
+                        </th>
+                        <th rowspan="2">
+                            <span style="float: left">Student conflict</span>
+                            <span (click)="onScAsc()" style="font-size: 18px; float: right;" class="glyphicon glyphicon-triangle-top"></span>
+                            <span (click)="onScDesc()" style="font-size: 18px; float: right;" class="glyphicon glyphicon-triangle-bottom"></span>
+                        </th>
+                        <th rowspan="2">
+                            <span style="float: left">Time preferences</span>
+                            <span (click)="onTimeAsc()" style="font-size: 18px; float: right;" class="glyphicon glyphicon-triangle-top"></span>
+                            <span (click)="onTimeDesc()" style="font-size: 18px; float: right;" class="glyphicon glyphicon-triangle-bottom"></span>
+                        </th>
+                        <th rowspan="2">
+                            <span style="float: left">Room preferences</span>
+                            <span (click)="onRoomAsc()" style="font-size: 18px; float: right;" class="glyphicon glyphicon-triangle-top"></span>
+                            <span (click)="onRoomDesc()" style="font-size: 18px; float: right;" class="glyphicon glyphicon-triangle-bottom"></span>
+                        </th>
+                        <th rowspan="2">
+                            <span style="float: left">Distribution preferences</span>
+                            <span (click)="onDistributionAsc()" style="font-size: 18px; float: right;" class="glyphicon glyphicon-triangle-top"></span>
+                            <span (click)="onDistributionDesc()" style="font-size: 18px; float: right;" class="glyphicon glyphicon-triangle-bottom"></span>
+                        </th>
+                        <th rowspan="2">
+                            <span style="float: left">Technique &nbsp;&nbsp;</span>
+                            <span (click)="onTechniqueAsc()" style="font-size: 18px; float: right;" class="glyphicon glyphicon-triangle-top"></span>
+                            <span (click)="onTechniqueDesc()" style="font-size: 18px; float: right;" class="glyphicon glyphicon-triangle-bottom"></span>
+                        </th>
+                        <th rowspan="2">
+                            <span style="float: left">Submission time</span>
+                            <span (click)="onSubmissionTimeAsc()" style="font-size: 18px; float: right;" class="glyphicon glyphicon-triangle-top"></span>
+                            <span (click)="onSubmissionTimeDesc()" style="font-size: 18px; float: right;" class="glyphicon glyphicon-triangle-bottom"></span>
+                        </th>
+                        <th rowspan="2"></th>
+                        <th rowspan="2"></th>
+                        <th rowspan="2"></th>
+                        <th rowspan="2" *ngIf="competitionIsOn()"></th>
+                    </tr>
+                    <tr>
+                        <th>Unassigned variables</th>
+                        <th>Total cost</th>
+                    </tr>
+                    </thead>
+                    <tbody *ngFor="let solution of solutions">
+                    <tr>
+                        <td><input type="checkbox" [(ngModel)]="solution.isChecked" disabled="{{ disabled }}"></td>
+                        <td>{{ solution.instance.name }}</td>
+                        <td>{{ solution.unassigned }}&nbsp;%</td>
+                        <td>{{ solution.total }}</td>
+                        <td>{{ solution.sc }}&nbsp;%</td>
+                        <td>{{ solution.time }}&nbsp;%</td>
+                        <td>{{ solution.room }}&nbsp;%</td>
+                        <td>{{ solution.distr }}&nbsp;%</td>
+                        <td>{{ solution.technique }}</td>
+                        <td>{{ solution.submissionTime | dateFormat }}</td>
+                        <td>
+                            <button type="button" class="btn btn-success btn-xs" (click)="onDownload(solution)" title="Download">
+                                <span class="glyphicon glyphicon-download-alt"></span>
+                            </button>
+                        </td>
+                        <td>
+                            <a
+                                type="button"
+                                class="btn btn-primary btn-xs"
+                                title="View validator info"
+                                target="_blank"
+                                [routerLink]="['/solution/validatorinfo',solution.solutionId]">
+                                <i class="glyphicon glyphicon-info-sign"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <button
+                                    *ngIf="competitionIsOn()"
+                                    class="btn btn-danger btn-xs"
+                                    title="Delete solution"
+                                    (click)="onDelete(solution)">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <span
+                                    *ngIf="solution.visible"
+                                    class="glyphicon glyphicon-eye-open"
+                                    title="Solution is visible">
+                            </span>
+                            <span
+                                    *ngIf="!solution.visible"
+                                    class="glyphicon glyphicon-eye-close"
+                                    title="Solution was hidden by admin">
+                            </span>
+                        </td>
+                    </tr>
+                    <tr *ngIf="showPapers">
+                        <td></td>
+                        <td><strong>Citation: </strong></td>
+                        <td colspan="12" id="paper">{{ solution.paper?.citation}}</td>
+                    </tr>
+                    <tr *ngIf="showPapers">
+                        <td></td>
+                        <td><strong>Url: </strong></td>
+                        <td colspan="12" id="paper"><a href="{{solution.paper?.url}}" target="_blank">{{ solution.paper?.url}}</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

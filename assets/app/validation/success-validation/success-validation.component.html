@@ -1,0 +1,94 @@
+<div *ngIf="validation" [ngStyle]="{'display': display}">
+    <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding: 5% 0% 5% 0%">
+        <table class="table table-striped table-borderless">
+            <tr>
+                <th>Unassigned variables</th>
+                <td>{{ validation.unassigned }}&nbsp;%</td>
+            </tr>
+            <tr>
+                <th>Total cost</th>
+                <td>{{ validation.total }}</td>
+            </tr>
+            <tr>
+                <th>Student conflicts</th>
+                <td>{{ validation.sc }}&nbsp;%</td>
+            </tr>
+            <tr>
+                <th>Time preferences</th>
+                <td>{{ validation.time }}&nbsp;%</td>
+            </tr>
+            <tr>
+                <th>Room preferences</th>
+                <td>{{ validation.room }}&nbsp;%</td>
+            </tr>
+            <tr>
+                <th>Distribution preferences</th>
+                <td>{{ validation.distr }}&nbsp;%</td>
+            </tr>
+            <tr>
+                <th>Validator info</th>
+                <td [innerHTML]=" validation.info | escapeHtml"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div *ngIf="showUploadForm" class="jumbotron col-xs-12 col-md-8 col-md-offset-2">
+        <div class="text-center">
+            <h2>Upload solution</h2>
+        </div>
+        <form *ngIf="solutionForm" [formGroup]="solutionForm" (ngSubmit)="onSubmit()">
+            <div class="form-group"
+                 [ngClass]="{'has-error':
+                        (!solutionForm.controls['technique'].valid ) &&
+                        (solutionForm.controls['technique'].touched || submitted)}">
+                <label for="technique">
+                    Technique
+                </label>
+                <input
+                        type="text"
+                        id="technique"
+                        class="form-control"
+                        [formControl]="solutionForm.controls['technique']">
+                <div class="field-error"
+                     *ngIf="(solutionForm.controls['technique'].hasError('required')) &&
+                            (solutionForm.controls['technique'].touched || submitted)">
+                    Field is required.
+                </div>
+            </div>
+            <div style="padding: 2% 0% 1% 0%; text-align: center; font-weight: bold">
+                <h4>Add reference (highly recommended)</h4>
+            </div>
+            <div class="form-group"
+                 [ngClass]="{'has-error': citationMissing}">
+                <label for="citation">
+                    Citation
+                </label>
+                <textarea
+                        id="citation"
+                        class="form-control"
+                        [formControl]="solutionForm.controls['citation']"></textarea>
+                <div class="field-error"
+                     *ngIf="citationMissing">
+                    Field is required for paper.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="url">
+                    Url
+                </label>
+                <input
+                        type="url"
+                        id="url"
+                        class="form-control"
+                        [formControl]="solutionForm.controls['url']">
+            </div>
+            <div align="right">
+                <button
+                        class="btn btn-primary align-right style-1"
+                        type="submit">
+                    Upload
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

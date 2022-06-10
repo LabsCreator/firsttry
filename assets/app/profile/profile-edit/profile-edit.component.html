@@ -1,0 +1,90 @@
+<script src="profile-edit.component.ts"></script>
+<div class="container" style="margin-top: 3%">
+    <div class="row">
+        <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <div class="jumbotron">
+                <div class="text-center">
+                    <h2>Edit profile</h2>
+                </div>
+                <form *ngIf="userForm" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group"
+                         [ngClass]="{'has-error':
+                        (!userForm.controls['firstName'].valid ) &&
+                        (userForm.controls['firstName'].touched || submitted)}">
+                        <label for="firstName">
+                            First name
+                        </label>
+                        <input
+                                type="text"
+                                id="firstName"
+                                class="form-control"
+                                [formControl]="userForm.controls['firstName']">
+                        <div class="field-error"
+                             *ngIf="(userForm.controls['firstName'].hasError('required')) &&
+                            (userForm.controls['firstName'].touched || submitted)">
+                            Field is required.
+                        </div>
+                        <div class="field-error"
+                             *ngIf="(userForm.controls['firstName'].hasError('maxlength')) &&
+                            (userForm.controls['firstName'].touched || submitted)">
+                            Field can have max 100 characters.
+                        </div>
+                    </div>
+                    <div class="form-group"
+                         [ngClass]="{'has-error':
+                        (!userForm.controls['lastName'].valid) &&
+                        (userForm.controls['lastName'].touched || submitted)}">
+                        <label for="lastName">
+                            Last name
+                        </label>
+                        <input
+                                type="text"
+                                id="lastName"
+                                class="form-control"
+                                [formControl]="userForm.controls['lastName']">
+                        <div class="field-error"
+                             *ngIf="(userForm.controls['lastName'].hasError('required')) &&
+                            (userForm.controls['lastName'].touched || submitted)">
+                            Field is required.
+                        </div>
+                        <div class="field-error"
+                             *ngIf="(userForm.controls['lastName'].hasError('maxlength')) &&
+                            (userForm.controls['lastName'].touched || submitted)">
+                            Field can have max 100 characters.
+                        </div>
+                    </div>
+                    <div class="form-group"
+                         [ngClass]="{'has-error':
+                    !userForm.controls['email'].valid &&
+                    (userForm.controls['email'].touched || submitted)}">
+                        <label for="email">
+                            Email address
+                        </label>
+                        <input
+                                type="email"
+                                id="email"
+                                class="form-control"
+                                [formControl]="userForm.controls['email']">
+                        <div class="field-error"
+                             *ngIf="!userForm.controls['email'].valid &&
+                        (userForm.controls['email'].touched || isSubmitted())">
+                            Email has to be valid e.g. john@gmail.com.
+                        </div>
+                    </div>
+                    <div align="right">
+                        <button
+                                class="btn btn-primary style-1"
+                                type="submit">
+                            Save
+                        </button>
+                        <button
+                                class="btn btn-primary align-right style-2"
+                                (click)="onCancel()">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

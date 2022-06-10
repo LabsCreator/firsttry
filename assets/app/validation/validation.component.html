@@ -1,0 +1,40 @@
+<button id="openModalNotView" [hidden]="true" data-toggle="modal" data-target="#notViewValidation"></button>
+
+<div class="modal fade" id="notViewValidation" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body" style="text-align: center; padding: 5% 0 5% 0">
+                You must be registered and logged in to validate and insert solution.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" [routerLink]="['/signin']">Log in</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="margin-top: 3%">
+    <div class="row">
+        <div *ngIf="showValidator()">
+            <div class="col-xs-12 col-md-6 col-md-offset-3">
+                <div class="jumbotron ">
+                    <div class="text-center">
+                        <h2>Validate solution</h2>
+                    </div>
+                    <div>
+                        <input #solution type="file" (change)="onChange()">
+                    </div>
+                    <div align="right">
+                        <button class="btn btn-primary style-1" (click)="onValidate()">Validate</button>
+                    </div>
+                </div>
+                <div *ngIf="logMessage">
+                    <p [innerHTML]=" logMessage  | escapeHtml"></p>
+                </div>
+            </div>
+            <div>
+                <app-success-validation></app-success-validation>
+            </div>
+        </div>
+    </div>
+</div>
